@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <title>JQ</title>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        </script>
+    </head>
+
+    <body>
+
+    <div id="main">
+        <h1>Список</h1>
+        <button onclick="CreateList()" id="btn">Вывести список</button>
+    </div>
+
+    <div id="5.2">
+        <h1>li</h1>
+        <button onclick="LiInfo()">Вывести информацию о LI</button>
+    </div>
+
+
+    <script>
+
+        let list = [
+            {
+                text: 'Животные',
+                children: [
+                    {
+                        text: 'Млекопитающие',
+                        children: [
+                            {
+                                text: 'Коровы',
+                                children: []
+                            },
+                            {
+                                text: 'Ослы',
+                                children: []
+                            },
+                            {
+                                text: 'Собаки',
+                                children: []
+                            },
+                            {
+                                text: 'Тигры',
+                                children: []
+                            }
+                        ]
+                    },
+                    {
+                        text: 'Другие',
+                        children: [
+                            {
+                                text: 'Змеи',
+                                children: []
+                            },
+                            {
+                                text: 'Птицы',
+                                children: []
+                            },
+                            {
+                                text: 'Ящерицы',
+                                children: []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                text: 'Рыбы',
+                children: [
+                    {
+                        text: 'Аквариумные',
+                        children: [
+                            {
+                                text: 'Гуппи',
+                                children: []
+                            },
+                            {
+                                text: 'Скалярии',
+                                children: []
+                            }
+                        ]
+                    },
+                    {
+                        text: 'Морские',
+                        children: [
+                            {
+                                text: 'Морская форель',
+                                children: []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        function CreateList() {
+
+            function createList(el) {
+
+                let ul = $('<ul></ul>');
+
+                for (let child of el) {
+                    let li = $('<li></li>').attr('value', child.text);
+
+                    li.append(child.text, child);
+                    if (child.children !== undefined)
+                        li.append(createList(child.children))
+
+
+                    li.on('click', function () {
+                        $(this.firstElementChild).slideToggle(600);
+                        return false
+                    })
+                    ul.append(li)
+                }
+                return ul
+            }
+
+            $('#main').append(createList(list));
+            $('#btn').remove();
+        }
+        function LiInfo() {
+            $("li").each(function () {
+                console.log("Текст элемента: " + $(this).attr('value') + "\r\nКоличество вложенных: " + $(this).find("li").length);
+            });
+        }
+    </script>
+    <form action="index.html">
+      <br>
+    <button type="submit">Back</button>
+    </form>
+    </body>
+</html>
